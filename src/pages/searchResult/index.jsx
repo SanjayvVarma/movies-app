@@ -7,41 +7,43 @@ import ContentWrapper from "../../components/contentWrapper";
 import MovieCard from "../../components/movieCard";
 import Spinner from "../../components/spinner";
 import noResults from "../../assets/no-results.png";
-
 const SearchResult = () => {
   const [data, setData] = useState(null);
   const [pageNum, setPageNum] = useState(1);
   const [loading, setLoading] = useState(false);
   const { query } = useParams();
 
-  const fetchInitialData = useCallback( () => {
+  const fetchInitialData = () => {
     setLoading(true);
-    fetchDataFromApi(`/search/multi?query=${query}&page=${pageNum}`)
-      .then((res) => {
+    fetchDataFromApi(`/search/multi?query=${query}&page=${pageNum}`).then(
+      (res) => {
         setData(res);
         setPageNum((prev) => prev + 1);
         setLoading(false);
       }
-      );
-  }, [query, pageNum]);
+    );
+  };
 
   const fetchNextPageData = () => {
-    fetchDataFromApi(`/search/multi?query=${query}&page=${pageNum}`)
-      .then((res) => {
+    fetchDataFromApi(`/search/multi?query=${query}&page=${pageNum}`).then(
+      (res) => {
         if (data?.results) {
-          setData({ ...data, results: [...data?.results, ...res.results], });
+          setData({
+            ...data,
+            results: [...data?.results, ...res.results],
+          });
         } else {
           setData(res);
         }
         setPageNum((prev) => prev + 1);
       }
-      );
+    );
   };
 
   useEffect(() => {
     setPageNum(1);
     fetchInitialData();
-  }, [query, fetchInitialData]);
+  }, [query]);
 
   return (
     <div className="searchResultsPage">
@@ -51,7 +53,10 @@ const SearchResult = () => {
           {data?.results?.length > 0 ? (
             <>
               <div className="pageTitle">
-                {`Search ${data?.total_results > 1 ? "results" : "result"} of '${query}'`}
+                {`Search ${data?.total_results > 1
+                  ? "results"
+                  : "result"
+                  } of '${query}'`}
               </div>
               <InfiniteScroll
                 className="content"
@@ -61,9 +66,13 @@ const SearchResult = () => {
                 loader={<Spinner />}
               >
                 {data?.results.map((item, index) => {
-                  if (item.media_type === "person") return null;
+                  if (item.media_type === "person") return;
                   return (
-                    <MovieCard key={index} data={item} fromSearch={true} />
+                    <MovieCard
+                      key={index}
+                      data={item}
+                      fromSearch={true}
+                    />
                   );
                 })}
               </InfiniteScroll>
@@ -73,6 +82,7 @@ const SearchResult = () => {
               <span className="resultNotFound"> Sorry, Results not found! </span>
               <img style={{ width: "80%" }} src={noResults} alt="" />
             </div>
+
           )}
         </ContentWrapper>
       )}
@@ -81,5 +91,3 @@ const SearchResult = () => {
 };
 
 export default SearchResult;
-
-
