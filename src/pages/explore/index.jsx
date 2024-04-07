@@ -121,7 +121,7 @@ const Explore = () => {
         </div>
         {loading && <Spinner initial={true} />}
         {!loading && (
-          <>
+          <div>
             {data?.results?.length > 0 ? (
               <InfiniteScroll
                 className="content"
@@ -140,7 +140,7 @@ const Explore = () => {
             ) : (
               <span className="resultNotFound"> Sorry, Results not found! </span>
             )}
-          </>
+          </div>
         )}
       </ContentWrapper>
     </div>
