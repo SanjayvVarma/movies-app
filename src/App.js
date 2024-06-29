@@ -1,23 +1,21 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
-import { useSelector, useDispatch } from 'react-redux'
-import fetchDataFromApi from './utils/api.js'
+import { useSelector, useDispatch } from 'react-redux';
+import fetchDataFromApi from './utils/api.js';
 import { getApiConfiguration, getGenres } from './store/homeSlice.js';
-import Header from "./components/header"
-import Footer from "./components/footer"
-import Home from "./pages/home"
-import Details from './pages/details'
-import SearchResult from './pages/searchResult'
-import PageNotFound from './pages/404'
-import Explore from './pages/explore'
-
-
-
+import Header from "./components/header";
+import Footer from "./components/footer";
+import Home from "./pages/home";
+import Details from './pages/details';
+import SearchResult from './pages/searchResult';
+import PageNotFound from './pages/404';
+import Explore from './pages/explore';
 
 function App() {
   const dispatch = useDispatch();
   const { url } = useSelector((state) => state.home);
+
 
   useEffect(() => {
     fetchApiConfig()
