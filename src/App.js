@@ -28,10 +28,14 @@ function App() {
 
       .then((res) => {
         console.log(res);
-        const url = {
-          backdrop: res.images.secure_base_url + "original",
-          poster: res.images.secure_base_url + "original",
-          profile: res.images.secure_base_url + "original"
+        if (res.images && res.images.secure_base_url) {
+          const baseUrl = res.images.secure_base_url;
+
+          const url = {
+            backdrop: baseUrl + "original",
+            poster: baseUrl + "original",
+            profile: baseUrl + "original"
+          };
         }
         dispatch(getApiConfiguration(url))
       })
@@ -48,8 +52,8 @@ function App() {
 
     const data = await Promise.all(promises);
     console.log(data);
-    data.map(({ genres }) => {
-      return genres.map((item) => (allGenres[item.id] = item));
+    data?.map(({ genres }) => {
+      return genres?.map((item) => (allGenres[item.id] = item));
     });
 
     dispatch(getGenres(allGenres));
