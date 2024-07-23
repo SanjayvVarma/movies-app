@@ -28,11 +28,10 @@ function App() {
 
       .then((res) => {
         console.log(res);
-        const baseUrl = res.images.secure_base_url ? res.images.secure_base_url : '';
         const url = {
-          backdrop: baseUrl + "original",
-          poster: baseUrl + "original",
-          profile: baseUrl + "original"
+          backdrop: res.images.secure_base_url + "original",
+          poster: res.images.secure_base_url + "original",
+          profile: res.images.secure_base_url + "original"
         }
         dispatch(getApiConfiguration(url))
       })
